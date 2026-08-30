@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emiliano App Builder</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111111;
+      color: #ffffff;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #444444;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 16px;
+    }
+
+    main {
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    .card {
+      background: #222222;
+      border: 1px solid #555555;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      width: 100%;
+      min-height: 54px;
+      margin: 8px 0;
+      padding: 12px;
+      border: 2px solid #ffffff;
+      border-radius: 10px;
+      background: #222222;
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    button:focus {
+      outline: 4px solid #ffffff;
+      outline-offset: 3px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 2px solid #777777;
+      background: #000000;
+      color: #ffffff;
+      font-size: 17px;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: 4px solid #ffffff;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      background: #000000;
+      border-top: 2px solid #555555;
+      padding: 8px;
+    }
+
+    .bottom-nav button {
+      margin: 0 4px;
+      min-height: 60px;
+      font-size: 15px;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 15px;
+      border: 1px solid #666666;
+      border-radius: 10px;
+      background: #1a1a1a;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Emiliano App Builder</h1>
+  <p>Platformë autonome për krijimin e aplikacioneve</p>
+</header>
+
+<main>
+
+  <!-- FAQJA E PARË -->
+  <section id="projects" class="page active" aria-labelledby="projects-title">
+
+    <h2 id="projects-title">Projektet e mia</h2>
+
+    <div class="card">
+      <p>Mirë se erdhe në Emiliano App Builder.</p>
+      <p>Këtu do të krijosh dhe menaxhosh aplikacionet e tua.</p>
+    </div>
+
+    <button type="button" aria-label="Krijo aplikacion të ri">
+      Krijo aplikacion të ri
+    </button>
+
+    <button type="button" aria-label="Projektet e mia">
+      Projektet e mia
+    </button>
+
+    <button type="button" aria-label="Skedarët e ruajtur">
+      Skedarët e ruajtur
+    </button>
+
+  </section>
+
+
+  <!-- FAQJA E DYTË -->
+  <section id="ai" class="page" aria-labelledby="ai-title">
+
+    <h2 id="ai-title">AI dhe Redaktuesi</h2>
+
+    <div class="card">
+      <label for="request">
+        Shkruaj kërkesën për aplikacionin:
+      </label>
+
+      <br><br>
+
+      <textarea
+        id="request"
+        aria-label="Shkruaj kërkesën për AI"
+        placeholder="Për shembull: Krijo një Sound Recorder..."
+      ></textarea>
+    </div>
+
+    <button
+      type="button"
+      aria-label="Bashkëngjit fotografi ose skedar">
+      Bashkëngjit fotografi ose skedar
+    </button>
+
+    <button
+      type="button"
+      aria-label="Foli AI-së me mikrofon">
+      Mikrofon – Foli AI-së
+    </button>
+
+    <button
+      type="button"
+      aria-label="Dërgo kërkesën te AI">
+      Dërgo kërkesën
+    </button>
+
+    <div
+      class="status"
+      role="status"
+      aria-live="polite">
+      AI është gati për kërkesën tënde.
+    </div>
+
+  </section>
+
+
+  <!-- FAQJA E TRETË -->
+  <section id="test" class="page" aria-labelledby="test-title">
+
+    <h2 id="test-title">Aplikacioni i ndërtuar</h2>
+
+    <div class="card">
+      <p>
+        Këtu do të shfaqet aplikacioni që do të ndërtohet nga AI.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      aria-label="Testo aplikacionin">
+      Testo aplikacionin
+    </button>
+
+    <button
+      type="button"
+      aria-label="Ruaj versionin aktual">
+      Ruaj versionin aktual
+    </button>
+
+    <button
+      type="button"
+      aria-label="Ndërto APK">
+      Ndërto APK
+    </button>
+
+    <button
+      type="button"
+      aria-label="Shkarko APK">
+      Shkarko APK
+    </button>
+
+  </section>
+
+</main>
+
+
+<!-- NAVIGIMI -->
+<nav class="bottom-nav" aria-label="Navigimi kryesor">
+
+  <button
+    type="button"
+    aria-label="Faqja e projekteve"
+    onclick="showPage('projects')">
+    Projektet
+  </button>
+
+  <button
+    type="button"
+    aria-label="Faqja e AI dhe redaktuesit"
+    onclick="showPage('ai')">
+    AI
+  </button>
+
+  <button
+    type="button"
+    aria-label="Faqja e testimit të aplikacionit"
+    onclick="showPage('test')">
+    Testimi
+  </button>
+
+</nav>
+
+
+<script>
+  function showPage(pageId) {
+
+    const pages = document.querySelectorAll('.page');
+
+    pages.forEach(function(page) {
+      page.classList.remove('active');
+    });
+
+    const selectedPage = document.getElementById(pageId);
+
+    if (selectedPage) {
+      selectedPage.classList.add('active');
+      selectedPage.setAttribute('tabindex', '-1');
+      selectedPage.focus();
+    }
+  }
+</script>
+
+</body>
+</html>
