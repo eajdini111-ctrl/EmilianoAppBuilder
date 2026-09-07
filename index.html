@@ -71,25 +71,27 @@
       font-weight: bold;
     }
 
-    button:focus {
+    button:focus,
+    textarea:focus,
+    input:focus {
       outline: 4px solid #ffffff;
       outline-offset: 3px;
     }
 
-    textarea {
+    textarea,
+    input {
       width: 100%;
-      min-height: 150px;
       padding: 15px;
       border-radius: 10px;
       border: 2px solid #777777;
       background: #000000;
       color: #ffffff;
       font-size: 17px;
-      resize: vertical;
     }
 
-    textarea:focus {
-      outline: 4px solid #ffffff;
+    textarea {
+      min-height: 150px;
+      resize: vertical;
     }
 
     .bottom-nav {
@@ -116,6 +118,14 @@
       border-radius: 10px;
       background: #1a1a1a;
     }
+
+    .project-item {
+      border: 1px solid #666666;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 10px;
+      background: #1a1a1a;
+    }
   </style>
 </head>
 
@@ -128,37 +138,54 @@
 
 <main>
 
-  <!-- FAQJA E PARË -->
+  <!-- PROJEKTET -->
   <section id="projects" class="page active" aria-labelledby="projects-title">
 
     <h2 id="projects-title">Projektet e mia</h2>
 
     <div class="card">
       <p>Mirë se erdhe në Emiliano App Builder.</p>
-      <p>Këtu do të krijosh dhe menaxhosh aplikacionet e tua.</p>
+      <p>Këtu mund të krijosh dhe menaxhosh projektet e tua.</p>
     </div>
 
-    <button type="button" aria-label="Krijo aplikacion të ri">
+    <button
+      type="button"
+      aria-label="Krijo aplikacion të ri"
+      onclick="createProject()">
       Krijo aplikacion të ri
     </button>
 
-    <button type="button" aria-label="Projektet e mia">
+    <button
+      type="button"
+      aria-label="Shfaq projektet e mia"
+      onclick="showProjects()">
       Projektet e mia
     </button>
 
-    <button type="button" aria-label="Skedarët e ruajtur">
+    <button
+      type="button"
+      aria-label="Shfaq skedarët e ruajtur"
+      onclick="showStatus('Skedarët do të lidhen me sistemin e projekteve në hapin tjetër.')">
       Skedarët e ruajtur
     </button>
+
+    <div
+      id="projectList"
+      class="card"
+      aria-live="polite">
+      Nuk ka ende projekte të krijuara.
+    </div>
 
   </section>
 
 
-  <!-- FAQJA E DYTË -->
+  <!-- AI -->
   <section id="ai" class="page" aria-labelledby="ai-title">
 
     <h2 id="ai-title">AI dhe Redaktuesi</h2>
 
     <div class="card">
+
       <label for="request">
         Shkruaj kërkesën për aplikacionin:
       </label>
@@ -168,29 +195,34 @@
       <textarea
         id="request"
         aria-label="Shkruaj kërkesën për AI"
-        placeholder="Për shembull: Krijo një Sound Recorder..."
-      ></textarea>
+        placeholder="Për shembull: Krijo një Sound Recorder...">
+      </textarea>
+
     </div>
 
     <button
       type="button"
-      aria-label="Bashkëngjit fotografi ose skedar">
+      aria-label="Bashkëngjit fotografi ose skedar"
+      onclick="showStatus('Bashkëngjitjet do të aktivizohen në hapin tjetër.')">
       Bashkëngjit fotografi ose skedar
     </button>
 
     <button
       type="button"
-      aria-label="Foli AI-së me mikrofon">
+      aria-label="Foli AI-së me mikrofon"
+      onclick="showStatus('Mikrofoni do të lidhet me AI-në në një hap të ardhshëm.')">
       Mikrofon – Foli AI-së
     </button>
 
     <button
       type="button"
-      aria-label="Dërgo kërkesën te AI">
+      aria-label="Dërgo kërkesën te AI"
+      onclick="sendRequest()">
       Dërgo kërkesën
     </button>
 
     <div
+      id="aiStatus"
       class="status"
       role="status"
       aria-live="polite">
@@ -200,38 +232,48 @@
   </section>
 
 
-  <!-- FAQJA E TRETË -->
+  <!-- TESTIMI -->
   <section id="test" class="page" aria-labelledby="test-title">
 
     <h2 id="test-title">Aplikacioni i ndërtuar</h2>
 
     <div class="card">
+
       <p>
         Këtu do të shfaqet aplikacioni që do të ndërtohet nga AI.
       </p>
+
+      <p id="currentProject">
+        Nuk ka ende projekt aktiv.
+      </p>
+
     </div>
 
     <button
       type="button"
-      aria-label="Testo aplikacionin">
+      aria-label="Testo aplikacionin"
+      onclick="showStatus('Testimi i aplikacionit do të lidhet me motorin e ndërtimit.')">
       Testo aplikacionin
     </button>
 
     <button
       type="button"
-      aria-label="Ruaj versionin aktual">
+      aria-label="Ruaj versionin aktual"
+      onclick="saveVersion()">
       Ruaj versionin aktual
     </button>
 
     <button
       type="button"
-      aria-label="Ndërto APK">
+      aria-label="Ndërto APK"
+      onclick="showStatus('Ndërtimi i APK-së do të lidhet me sistemin Android në një hap të ardhshëm.')">
       Ndërto APK
     </button>
 
     <button
       type="button"
-      aria-label="Shkarko APK">
+      aria-label="Shkarko APK"
+      onclick="showStatus('Shkarkimi i APK-së do të aktivizohet pasi të ndërtohet sistemi i vërtetë Android.')">
       Shkarko APK
     </button>
 
@@ -268,6 +310,9 @@
 
 
 <script>
+
+  let currentProject = null;
+
   function showPage(pageId) {
 
     const pages = document.querySelectorAll('.page');
@@ -280,10 +325,161 @@
 
     if (selectedPage) {
       selectedPage.classList.add('active');
+
       selectedPage.setAttribute('tabindex', '-1');
+
       selectedPage.focus();
     }
   }
+
+
+  function showStatus(message) {
+
+    const status = document.getElementById('aiStatus');
+
+    if (status) {
+      status.textContent = message;
+    }
+  }
+
+
+  function createProject() {
+
+    const name = prompt('Shkruaj emrin e aplikacionit:');
+
+    if (!name || !name.trim()) {
+      showStatus('Krijimi i projektit u anulua.');
+      return;
+    }
+
+    const project = {
+      name: name.trim(),
+      created: new Date().toLocaleString('sq-AL'),
+      version: 1
+    };
+
+    const projects =
+      JSON.parse(localStorage.getItem('emilianoProjects') || '[]');
+
+    projects.push(project);
+
+    localStorage.setItem(
+      'emilianoProjects',
+      JSON.stringify(projects)
+    );
+
+    currentProject = project;
+
+    document.getElementById('currentProject').textContent =
+      'Projekti aktiv: ' + project.name;
+
+    showStatus(
+      'Projekti ' + project.name + ' u krijua me sukses.'
+    );
+
+    showPage('ai');
+  }
+
+
+  function showProjects() {
+
+    const container = document.getElementById('projectList');
+
+    const projects =
+      JSON.parse(localStorage.getItem('emilianoProjects') || '[]');
+
+    if (projects.length === 0) {
+
+      container.textContent =
+        'Nuk ka ende projekte të krijuara.';
+
+      return;
+    }
+
+    container.innerHTML =
+      '<strong>Projektet e ruajtura:</strong>';
+
+    projects.forEach(function(project) {
+
+      const item = document.createElement('div');
+
+      item.className = 'project-item';
+
+      item.textContent =
+        project.name +
+        ' — versioni ' +
+        project.version;
+
+      container.appendChild(item);
+    });
+  }
+
+
+  function sendRequest() {
+
+    const request =
+      document.getElementById('request').value.trim();
+
+    if (!request) {
+
+      showStatus(
+        'Shkruaj fillimisht një kërkesë për AI-në.'
+      );
+
+      return;
+    }
+
+    showStatus(
+      'Kërkesa u pranua. Lidhja reale me AI-në do të shtohet në hapin tjetër.'
+    );
+  }
+
+
+  function saveVersion() {
+
+    if (!currentProject) {
+
+      showStatus(
+        'Nuk ka ende një projekt aktiv.'
+      );
+
+      return;
+    }
+
+    currentProject.version++;
+
+    const projects =
+      JSON.parse(localStorage.getItem('emilianoProjects') || '[]');
+
+    const index = projects.findIndex(
+      function(project) {
+        return project.name === currentProject.name;
+      }
+    );
+
+    if (index !== -1) {
+
+      projects[index] = currentProject;
+
+      localStorage.setItem(
+        'emilianoProjects',
+        JSON.stringify(projects)
+      );
+    }
+
+    showStatus(
+      'Versioni i ri u ruajt.'
+    );
+  }
+
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+      showProjects();
+    }
+  );
+
 </script>
 
 </body>
